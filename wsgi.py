@@ -6,10 +6,9 @@ from App.database import db, get_migrate
 from App.models import User
 from App.main import create_app
 from App.controllers import ( create_user, get_all_users_json, get_all_users, initialize )
+from App.models.admin import Admin 
+from App.models.staff import Staff
 
-
-#can i see this line in my github ?
-#yup
 
 # This commands file allow you to create convenient CLI commands for testing controllers
 
@@ -20,7 +19,31 @@ migrate = get_migrate(app)
 @app.cli.command("init", help="Creates and initializes the database")
 def init():
     initialize()
+    Aria=Staff(username='Aria',password='ariapass',role='staff')
+    Bob=Staff(username='Boblin',password='boblinpass',role='staff')
+    Charmon=Staff(username='Charmona',password='charmonapass',role='staff')
+
+    Ian=Admin(username='Ian',password='ianpass',role='admin')
+    Dyan=Admin(username='Dyan',password='dyanpass',role='admin')
+   
+
+    db.session.add_all([Aria,Bob,Charmon,Ian,Dyan])
+    db.session.commit()
     print('database intialized')
+
+
+
+@app.cli.command("schedule-staff",help="allcocates a staff to a certain time ")
+# this shoudl be within 1 week 
+# admins should seee that dates and time available and set a date and time for staff? 
+
+@app.cli.command("list-staff",help="testing if this works ")
+def list_staff():
+    staff=Staff.query.all()
+    for s in staff:
+        print (f'{s}')
+
+
 
 '''
 User Commands
