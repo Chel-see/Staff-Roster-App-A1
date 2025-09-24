@@ -7,7 +7,7 @@ class Staff(User): # inherit from Parent class User
     schedule = db.relationship(
         "Schedule",
         back_populates="staff",
-        cascade="all, delete-orphan"   # ✅ cascade belongs here
+        cascade="all, delete-orphan"   
     )
 
     __mapper_args__={'polymorphic_identity':'staff'}

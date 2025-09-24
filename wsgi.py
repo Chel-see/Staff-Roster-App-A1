@@ -1,6 +1,7 @@
 import click, pytest, sys
 from flask import Flask
 from flask.cli import with_appcontext, AppGroup
+from sqlalchemy import table
 
 from App.database import db, get_migrate
 from App.models import User
@@ -93,11 +94,13 @@ def view_slots():
 
     console.print(table)
 
+
+
 @admin.command("schedule-staff",help="allocates a staff to a certain time ")
 def staff_times():
 
-    print("Admins , assign the following staff members to this weeks timeslots ...")
-    print("Use the staff and the Days/Time ID to allocate a staff to a time slot")
+    print("\n Admins , assign the following staff members to this weeks timeslots ...")
+    print("Use the staff and the Days/Time ID to allocate a staff to a time slot \n")
 
     staff=Staff.query.all()
     table=Table(title="Staff List")
@@ -117,19 +120,123 @@ def staff_times():
     time_day=Available.query.get(time_day_id)
 
     if member and time_day:
+     if time_day.status=="available":
         newschedule=Schedule(staff_id=member.id,available_id=time_day.id)
         time_day.set_status("closed")
-
-
         db.session.add(newschedule)
-        db.session.commit()
-
-        
-        print(f"{member.firstname} {member.lastname} has been scheduled for {time_day.day} from {time_day.start_time} to {time_day.end_time} {time_day.status}")
-
-
+        db.session.commit()    
+        print(f"{member.firstname} {member.lastname} has been scheduled for {time_day.day} from {time_day.start_time} to {time_day.end_time}")
+     else:
+        print("Time slot is taken ") 
 
 app.cli.add_command(admin)
+
+
+staff=AppGroup('staff', help='Staff object commands')
+
+@staff.command("view-schedule",help="view the schedule for the week ")
+def view_schedule():
+    schedules = Schedule.query.all()
+    table = Table(title="Weekly Schedule")
+    table.add_column("Staff", justify="left",style="green")
+    table.add_column("Day", justify="left",style="red")
+    table.add_column("Start Time", justify="left" )
+    table.add_column("End Time", justify="left")
+#fix
+    for s in schedules:
+        # staff = Staff.query.get(s.staff_id)
+        # available = Available.query.get(s.available_id)
+        table.add_row(f"{s.staff.firstname} {s.staff.lastname}", s.available.day, s.available.start_time, s.available.end_time)
+
+    console.print(table)
+
+
+
+
+@staff.command("clock-in", help="logs the beginning of a staff member's shift")
+def check_in():
+
+    staff_id=int(input("Enter your employee ID :"))
+    staff_times=Schedule.query.filter_by(staff_id=staff_id).all() # validates that this employee has been scheduled
+
+    if staff_times:                                       
+        print("\n Your scheduled times are as follows . \n")
+
+        table=Table(title=f"{staff_times[0].staff.firstname}'s Weekly Schedule") # because there can have multiple entries in the list
+        table.add_column("Schedule ID", justify="center",style="cyan")
+        table.add_column("Day", justify="center")
+        table.add_column("Start Time", justify="center")
+        table.add_column("End Time", justify="center")
+
+        for s in staff_times:
+                table.add_row(f"{s.id}",f"{s.available.day}", f"{s.available.start_time}", f"{s.available.end_time}")
+        console.print(table)
+
+       
+        schedule_id=int(input("Enter the Schedule ID of the shift you are clocking in for : "))  # since any number can be entered that may correspond to someone else's schedule
+
+
+        
+        if schedule_id:
+
+                check_in=input("\n Enter the current time hh:mm:am/pm  -   ")
+               
+
+                s1=Shift(staff_id=staff_id,schedule_id=schedule_id,timeIn=check_in,timeOut=None)
+
+                db.session.add(s1)
+                db.session.commit()
+                print(f"You have been clocked in")
+ 
+        
+        #print(f"Hey, {staff.firstname}. Your shift starts now :)")
+    else:
+        print("Schedule not found")
+
+
+
+@staff.command("clock-out", help=" Logs the end time of a staff member's shift")
+def check_out():
+
+    staff_id=int(input("Enter your employee ID :")) 
+    open=Shift.query.filter(Shift.staff_id==staff_id, Shift.timeIn!=None, Shift.timeOut==None).first() # checks if there is an open shift for this staff member
+   
+    if open:
+        print(open)
+        table=Table()
+        
+        table.add_column("Day",justify="center")
+        table.add_column("Began",justify="center")
+        table.add_column("Ended",justify="center")
+
+        table.add_row(f"{open.schedule.available.day}",f"{open.timeIn}",f"{open.timeOut}")
+        console.print(table)
+        
+
+        check_out=(input("Enter your current time hh:mm am/pm -"))
+        
+        open.set_timeOut(check_out)
+
+        db.session.commit()
+        table=Table()
+        table.add_column("Day",justify="center")
+        table.add_column("Began",justify="center")
+        table.add_column("Ended",justify="center")
+        table.add_row(f"{open.schedule.available.day}",f"{open.timeIn}",f"{open.timeOut}")
+
+
+        console.print(table)
+        print("You have been clocked out")
+    else: 
+        print("No open shifts found")
+
+
+
+
+
+
+
+app.cli.add_command(staff)
 
 
 

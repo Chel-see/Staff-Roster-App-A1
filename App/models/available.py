@@ -11,7 +11,7 @@ class Available(db.Model):
     schedule = db.relationship(
         "Schedule",
         back_populates="available",
-        cascade="all, delete-orphan"   # ✅ cascade belongs here too
+        cascade="all, delete-orphan"   
     )
   
 
