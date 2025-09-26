@@ -6,6 +6,3 @@ class Admin(User):
 
     __mapper_args__={'polymorphic_identity':'admin'}
 
-
-    def __repr__(self):
-        return f"{self.username}"
