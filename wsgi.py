@@ -85,7 +85,7 @@ def init():
 def view_slots():
 
     all_admins=Admin.query.all()
-    print(all_admins)
+    print(f"\nThe following are our admins : \n{all_admins}\n")
 
     ad_ID=int(input("Enter your admin ID : "))
     admin=Admin.query.get(ad_ID)
@@ -114,7 +114,7 @@ def view_slots():
 def staff_times():
 
     all_admins=Admin.query.all()
-    print(all_admins)
+    print(f"\nThe following are our admins : \n{all_admins}\n")
 
     ad_ID=int(input("Enter your admin ID : "))
     admin=Admin.query.get(ad_ID)
@@ -311,7 +311,7 @@ def check_out():
 @app.cli.command("weekly-report", help="Generates a report for admins to asses the working hours completed of staff")
 def report():
     all_admins=Admin.query.all()
-    print(all_admins)
+    print(f"\nThe following are our admins : \n{all_admins}\n")
 
     ad_ID=int(input("Enter your admin ID : "))
 
@@ -340,15 +340,15 @@ def report():
             staff_shift=Shift.query.filter_by(staff_id=s.id).all() # all shifts for 1 staff
 
             for sh in staff_shift:
-               
-              
+                if sh.complete:
 
-               In=datetime.strptime(sh.timeIn,"%I:%M %p")
-               Out=datetime.strptime(sh.timeOut,"%I:%M %p")
+                    In=datetime.strptime(sh.timeIn,"%I:%M %p")
+                    Out=datetime.strptime(sh.timeOut,"%I:%M %p")
 
-              
-               total_worked+=(Out-In)
-               worked_hours=total_worked.total_seconds()/3600
+                    
+                    total_worked+=(Out-In)
+                    worked_hours=total_worked.total_seconds()/3600
+
 
             staff_schedule=Schedule.query.filter_by(staff_id=s.id).all() # all the times assiged to 1 staff
             
@@ -362,7 +362,7 @@ def report():
 
            
 
-            table.add_row(f"{s.id}",f"{s.firstname} {s.lastname}", f"{assigned_hours}", f"{worked_hours}")
+            table.add_row(f"{s.id}",f"{s.firstname} {s.lastname}", f"{assigned_hours:.1f}", f"{worked_hours:.1f}")
         console.print(table)
 
     else:
@@ -371,6 +371,7 @@ def report():
     mid=int(input("Enter a staff ID to view detailed report : "))
 
     scheduled_shift=Schedule.query.filter_by(staff_id=mid).all()
+
     if scheduled_shift:
 
         table=Table(title=f"{scheduled_shift[0].staff.firstname} {scheduled_shift[0].staff.lastname}'s Report")
@@ -386,7 +387,7 @@ def report():
 
         for s in scheduled_shift:
             if s.shift==None:
-                table.add_row(f"{s.available.day}",f"{s.available.start_time}",f"{s.available.end_time}","-","-","Absent")
+                table.add_row(f"{s.available.day}",f"{s.available.start_time}",f"{s.available.end_time}","-","-","Incomplete")
             else:
                 if s.shift.complete:
                     status="Completed"

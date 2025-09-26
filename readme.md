@@ -102,12 +102,60 @@ $ gunicorn wsgi:app
 # Deploying
 You can deploy your version of this app to render by clicking on the "Deploy to Render" link above.
 
+
+
+
+
 # Initializing the Database
 When connecting the project to a fresh empty database ensure the appropriate configuration is set then file then run the following command. This must also be executed once when running the app on heroku by opening the heroku console, executing bash and running the command in the dyno.
 
 ```bash
 $ flask init
 ```
+
+# Assignment Commands
+# admin commands
+Admin commands requires the admin to enter their ID before proceeding. 
+There are two admins with ID's 4 & 5. 
+
+This was created to help admins view all the working hours for that week that a staff member can be assigned.
+
+```bash
+$ flask view-slots
+```
+
+This allows an admin to assign a staff mmeber to a timeslot. Admins must enter the staff member's ID and the availability ID . 
+Combined , this creates a schedule. A staff member must work on the assigned days at the assigned times. 
+
+```bash
+$ flask schedule-staff
+```
+
+Generates a report for each staff showing the amount of hours worked vs the amount assigned. The admins can specify a staff's ID to see a more detailed report.
+
+```bash
+$ flask weekly-report
+```
+# staff commands
+These command were build to help staff navigate their schedules
+
+Staff can view the entire roster of employees 
+
+```bash
+$ flask view-schedule
+```
+
+Allows a staff  to record their time at the beginning of their shift . 
+```bash
+$ flask clock-in
+```
+Allows a staff to record their time at the end of their shift
+```bash
+$ flask clock-out
+```
+
+
+
 
 # Database Migrations
 If changes to the models are made, the database must be'migrated' so that it can be synced with the new models.
