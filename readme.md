@@ -145,11 +145,13 @@ Staff can view the entire roster of employees
 $ flask view-schedule
 ```
 
-Allows a staff  to record their time at the beginning of their shift . 
+Allows a staff  to record their time at the beginning of their shift  
+
 ```bash
 $ flask clock-in
 ```
 Allows a staff to record their time at the end of their shift
+
 ```bash
 $ flask clock-out
 ```
