@@ -9,6 +9,9 @@
 A template for flask applications structured in the Model View Controller pattern [Demo](https://dcit-flaskmvc.herokuapp.com/). [Postman Collection](https://documenter.getpostman.com/view/583570/2s83zcTnEJ)
 
 
+# Links & Resources
+* Public Github Repository [https://github.com/Chel-see/Staff-Roster-App-A1]
+
 # Dependencies
 * Python3/pip3
 * Packages listed in requirements.txt
@@ -80,14 +83,17 @@ app.cli.add_command(user_cli) # add the group to the cli
 
 ```
 
-Then execute the command invoking with flask cli with command name and the relevant parameters
 
-```bash
-$ flask user create bob bobpass
-```
+
+
 
 
 # Running the Project
+_Activate virtual environment before running the project_
+```bash
+$ venv\Scripts\activate
+```
+
 
 _For development run the serve command (what you execute):_
 ```bash
@@ -104,8 +110,6 @@ You can deploy your version of this app to render by clicking on the "Deploy to 
 
 
 
-
-
 # Initializing the Database
 When connecting the project to a fresh empty database ensure the appropriate configuration is set then file then run the following command. This must also be executed once when running the app on heroku by opening the heroku console, executing bash and running the command in the dyno.
 
@@ -114,7 +118,7 @@ $ flask init
 ```
 
 # Assignment Commands
-# admin commands
+# Admin commands
 Admin commands requires the admin to enter their ID before proceeding. 
 There are two admins with ID's 4 & 5. 
 
@@ -136,7 +140,7 @@ Generates a report for each staff showing the amount of hours worked vs the amou
 ```bash
 $ flask weekly-report
 ```
-# staff commands
+# Staff commands
 These command were build to help staff navigate their schedules
 
 Staff can view the entire roster of employees 
@@ -155,6 +159,9 @@ Allows a staff to record their time at the end of their shift
 ```bash
 $ flask clock-out
 ```
+
+
+
 
 
 
