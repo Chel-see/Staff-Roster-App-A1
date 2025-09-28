@@ -260,7 +260,7 @@ def check_out():
     open=Shift.query.filter(Shift.staff_id==staff_id, Shift.complete==False).first() # checks if there is an open shift for this staff member
    
     if open:
-        print(open)
+        # print(open)
         table=Table()
         
         table.add_column("Day",justify="center")
