@@ -7,9 +7,9 @@ class Schedule(db.Model):
     staff_id = db.Column(db.Integer, db.ForeignKey('staff.id'), nullable=False)
     available_id = db.Column(db.Integer, db.ForeignKey('available.id'), nullable=False)
 
-    staff=db.relationship("Staff", back_populates="schedule")
-    available = db.relationship("Available", back_populates="schedule")
-    shift = db.relationship("Shift", back_populates="schedule", uselist=False)
+    #staff=db.relationship("Staff", back_populates="schedule")
+    #available = db.relationship("Available", back_populates="schedule")
+    shift = db.relationship("Shift", backref="schedule", uselist=False, cascade="all, delete-orphan")
 
     def __init__(self,staff_id,available_id):
         self.staff_id=staff_id

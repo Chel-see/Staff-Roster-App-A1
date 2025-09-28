@@ -6,7 +6,7 @@ class Staff(User): # inherit from Parent class User
     id=db.Column(db.Integer,db.ForeignKey('user.id'),primary_key=True)
     schedule = db.relationship(
         "Schedule",
-        back_populates="staff",
+        backref="staff",
         cascade="all, delete-orphan"   
     )
 

@@ -10,7 +10,7 @@ class Available(db.Model):
 
     schedule = db.relationship(
         "Schedule",
-        back_populates="available",
+        backref="available",
         cascade="all, delete-orphan"   
     )
   

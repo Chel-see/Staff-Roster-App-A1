@@ -11,7 +11,7 @@ class Shift(db.Model):
 
     complete=db.Column(db.Boolean)
 
-    schedule = db.relationship("Schedule", back_populates="shift")
+    #schedule = db.relationship("Schedule", back_populates="shift")
 
     def __init__(self,staff_id,schedule_id,timeIn,timeOut):
         self.staff_id=staff_id

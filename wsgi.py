@@ -151,7 +151,9 @@ def staff_times():
         db.session.commit()    
         print(f"{member.firstname} {member.lastname} has been scheduled for {time_day.day} from {time_day.start_time} to {time_day.end_time}")
      else:
-        print("Time slot is taken ") 
+        print("Time slot is taken ")
+    else:
+        print("Invalid Staff ID or Time Slot ID") 
 
 
 
