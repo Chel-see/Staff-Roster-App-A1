@@ -24,6 +24,9 @@ class Available(db.Model):
     def set_status(self,status):
         self.status=status
 
+    def __repr__(self):
+        return f"|{self.id}-{self.day} {self.start_time}-{self.end_time} {self.status}|"
+
         
 
   

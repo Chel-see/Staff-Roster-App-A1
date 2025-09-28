@@ -15,6 +15,8 @@ class Schedule(db.Model):
         self.staff_id=staff_id
         self.available_id=available_id
      
+    def __repr__(self):
+        return f"|{self.id}-{self.staff.name} {self.available.day} {self.available.start_time}-{self.available.end_time}|"
 
 
 
