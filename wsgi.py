@@ -220,7 +220,8 @@ def check_in():
             print("You have COMPLETED this shift for THIS WEEK.")
             return
         
-        if schedule_id:
+        schedule=Schedule.query.get(schedule_id)
+        if schedule:
 
                 check_in=input("\n Enter the current time hh:mm: AM/PM -   ")
                 try:
@@ -229,8 +230,6 @@ def check_in():
                 except ValueError:
                     print("Invalid date/time format. Must be hh:mm AM/PM") 
                     return
-                
-                schedule=Schedule.query.get(schedule_id)
 
                 start_time=datetime.strptime(schedule.available.start_time,"%I:%M %p")
                 end_time=datetime.strptime(schedule.available.end_time,"%I:%M %p")
@@ -243,11 +242,9 @@ def check_in():
                         db.session.commit()
                         print(f"You have been clocked in")
                 else:
-                    print(f" You cannot clock in at this time.")
-                  
-                
+                    print(f" You cannot clock in at this time.")        
         else:
-            print("Invalid Schedule ID")
+            print("You do not have a schedule with this ID.")
 
     else:
          print("\nSchedule not found")
@@ -396,6 +393,7 @@ def report():
                 else:
                     status="Ongoing"
                 table.add_row(f"{s.available.day}",f"{s.available.start_time}",f"{s.available.end_time}",f"{s.shift.timeIn}",f"{s.shift.timeOut}",f"{status}")
+       
         console.print(table)
     else:
         print(" You did not schedule this staff member")
