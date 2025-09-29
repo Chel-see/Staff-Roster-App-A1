@@ -91,7 +91,7 @@ app.cli.add_command(user_cli) # add the group to the cli
 # Running the Project
 _Activate virtual environment before running the project_
 ```bash
-$ venv\Scripts\activate
+$ venv39\Scripts\activate
 ```
 
 

@@ -96,7 +96,7 @@ def view_slots():
     
     timeslots=Available.query.all()
 
-    table=Table(title="Days & Times")
+    table=Table(title="\nDays & Times")
     table.add_column("ID",justify="left")
     table.add_column("Days",justify="left")
     table.add_column("Start times",justify="center")
@@ -128,7 +128,7 @@ def staff_times():
 
     staff=Staff.query.all()
     table=Table(title="Staff List")
-    table.add_column("ID",justify="right")
+    table.add_column("ID",justify="right",style="bold green")
     table.add_column("First Name",justify="left")
     table.add_column("Last Name",justify="left")
     for s in staff:
@@ -162,7 +162,7 @@ def staff_times():
 @app.cli.command("view-schedule",help="view the schedule for the week ")
 def view_schedule():
     schedules = Schedule.query.all()
-    table = Table(title="Weekly Schedule")
+    table = Table(title="\nWeekly Schedule",style="bold blue")
     table.add_column("Staff", justify="left",style="green")
     table.add_column("Day", justify="left",style="red")
     table.add_column("Start Time", justify="left" )
@@ -181,7 +181,7 @@ def view_schedule():
 @app.cli.command("clock-in", help="logs the beginning of a staff member's shift")
 def check_in():
 
-    staff_id=int(input("Enter your employee ID :"))
+    staff_id=int(input("\nEnter your employee ID :"))
 
     staff_times=Schedule.query.filter_by(staff_id=staff_id).all() # validates that this employee has been scheduled
 
@@ -250,7 +250,7 @@ def check_in():
             print("Invalid Schedule ID")
 
     else:
-         print("Schedule not found")
+         print("\nSchedule not found")
 
 
 
@@ -258,7 +258,7 @@ def check_in():
 @app.cli.command("clock-out", help=" Logs the end time of a staff member's shift")
 def check_out():
 
-    staff_id=int(input("Enter your employee ID :")) 
+    staff_id=int(input("\nEnter your employee ID :")) 
     open=Shift.query.filter(Shift.staff_id==staff_id, Shift.complete==False).first() # checks if there is an open shift for this staff member
    
     if open:
