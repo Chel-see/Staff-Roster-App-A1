@@ -97,7 +97,7 @@ def view_slots():
     timeslots=Available.query.all()
 
     table=Table(title="\nDays & Times")
-    table.add_column("ID",justify="left")
+    table.add_column("Time slot ID",justify="left")
     table.add_column("Days",justify="left")
     table.add_column("Start times",justify="center")
     table.add_column("End times",justify="center")
